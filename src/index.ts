@@ -8,9 +8,9 @@ import { generateConversationHash, getConversationId, saveConversationId } from 
 import { hashString } from "./utils";
 
 const headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
     "Accept": "text/event-stream",
-    "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
+    "Accept-Language": "en-US,en;q=0.9",
     "Accept-Encoding": "gzip, deflate, br",
     "Referer": "https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1",
     "Content-Type": "application/json",
@@ -23,7 +23,7 @@ const headers = {
     "Pragma": "no-cache",
     "TE": "trailers",
     "x-vqd-accept": "1",
-    "cache-control": "no-store"
+    "cache-control": "no-cache"
 };
 
 const statusURL = "https://duckduckgo.com/duckchat/v1/status";
@@ -63,6 +63,10 @@ async function createNewConversationId(): Promise<string | null> {
         method: "GET",
         headers: headers
     });
+    if (!res.ok) {
+        console.debug("Failed to fetch status, status:", res.status);
+        return null;
+    }
     return res.headers.get("x-vqd-4");
 }
 
